@@ -7,7 +7,7 @@ export const POST = withApiHandler(async (request) => {
   const res = await backendClient.request({
     method: 'GET',
     url: '/playlink/findAccount',
-    data: body,
+    params: body,
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
@@ -15,19 +15,12 @@ export const POST = withApiHandler(async (request) => {
     validateStatus: function () {
       return true;
     },
-    transformRequest: [
-      function (data) {
-        try {
-          return JSON.stringify(data);
-        } catch (e) {
-          return data;
-        }
-      },
-    ],
   });
 
   const payload = res.data || {};
   const code = payload.errCode;
+
+  console.log('payload', payload);
 
   if (code === 0) {
     return {
